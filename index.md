@@ -7,7 +7,7 @@ revealOptions:
 ---
 
 <!-- .slide: data-background="./images/akshar-dave-1GRvY9WUu08-unsplash.jpg" -->
-<h1 class="title" style="text-align:left;">Webmentions<span class="translucent"> + Eleventy</span></h1>
+<h1 class="title" style="text-align:left;">Serverless <span class="translucent">Functions +</span> Netlify</h1>
 <h2 class="subtitle" style="color:#333;text-align:left;">Sia Karamalegos</h2>
 
 ---
@@ -20,10 +20,12 @@ revealOptions:
 
 ---
 
+<!-- TODO: update -->
 ## [sia.codes/posts/webmentions-eleventy-talk/](https://sia.codes/posts/webmentions-eleventy-talk/)
 
 ---
 
+<!-- TODO: update -->
 ## Show + Tell
 
 Webmentions are cool 😎
@@ -34,68 +36,125 @@ Note: Show site with webmentions at bottom. Point out that this isn't a commenti
 
 ---
 
-<span class="icons"><i class="far fa-2x fa-laptop"></i>  <i class="far fa-2x fa-ellipsis-h"></i><i class="far fa-2x fa-long-arrow-right"></i> <i class="far fa-2x fa-desktop"></i></span>
+## Serverless Architecture
 
-> Webmention... enables one website address (URL) to notify another website address that the former contains a reference to the latter.
+&nbsp;
 
-<small>[Webmentions: Enabling Better Communication on the Internet](https://alistapart.com/article/webmentions-enabling-better-communication-on-the-internet/)</small>
+<div class="align-left">
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="fas fa-function"></i></span> Applications are broken up into individual functions </p>
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-cloud-upload-alt"></i></span> Hosted by a 3rd party service </p>
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-chart-line"></i></span> Can be invoked and scaled individually </p>
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-server"></i></span> No need for server management by the developer</p>
+</div>
+
+&nbsp;
+
+<small>[Serverless Architecture](https://www.twilio.com/docs/glossary/what-is-serverless-architecture)</small>
 
 ---
 
 <!-- .slide: data-background="./images/duotone-yell.jpg" class="dark-highlight-quote" -->
 
-> When you link to a website, you can send it a Webmention to notify it. If it supports Webmentions, then that website may display your post as a comment, like, or other response, and presto, you’re having a conversation from one site to another! <!-- .element: class="dark-background" -->
+## Jamstack <!-- .element: class="dark-background" -->
 
-<small class="dark-background">[indieweb.org](https://indieweb.org/Webmention)<!-- .element: class="dark-background" --></small>
+> A modern web development architecture based on client-side JavaScript, reusable APIs, and prebuilt Markup <!-- .element: class="dark-background" -->
 
----
-
-<span class="fa-stack fa-2x icons">
-  <i class="far fa-building fa-stack-1x" style="color:#222;"></i>
-  <i class="far fa-ban fa-stack-2x"></i>
-</span>
-
-> The IndieWeb is a people-focused alternative to the "corporate web".
-
-<small>[indieweb.org](https://indieweb.org/)</small>
+<small class="dark-background">— Mathias Biilmann (CEO & Co-founder of Netlify) [jamstack.wtf](https://jamstack.wtf/)</small>
 
 ---
 
-## Principles of the IndieWeb <!-- .element: class="align-left" -->
+<img src="./images/how-it-works.svg" class="plain" alt="Screenshot of how Jamstack works">
 
-<div class="align-left">
-  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-browser"></i></span> Own your own domain</p>
-  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-database"></i></span> Own your own content and data</p>
-  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="fab fa-dev"></i></span> Optionally syndicate elsewhere</p>
-  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-users"></i></span> Connect with everyone, e.g. using webmentions</p>
+<small>[www.netlify.com/jamstack/](https://www.netlify.com/jamstack/)</small>
 
+Note: Step 1 is to decouple the frontend from the backend. The APIs can be from many sources - like a CMS, Stripe, Square, Auth0, FaunaDB, Hasura Cloud, etc.
+
+---
+
+## Prebuild static pages for speed
+
+<div class="logo-grid">
+  <img src="./images/eleventy.svg" class="plain" alt="Eleventy" width=60% style="background-color:black;">
+  <img src="./images/nextjs.png" class="plain" alt="Next.js">
+  <img src="./images/jekyll-logo-light-solid.png" class="plain" alt="Jekyll">
+  <img src="./images/nuxtjs.svg" class="plain" alt="Nuxt.js">
+  <img src="./images/gatsby.svg" class="plain" alt="Gatsby.js">
+  <img src="./images/hugo.png" class="plain" alt="Hugo">
 </div>
+
+Note: you can also use vanilla html, css, and javascript.
+
+---
+
+<!-- TODO: explain what netlify does - maybe show a basic site like sia.codes -->
 
 ---
 
 <!-- .slide: data-background="./images/balloon-feet.jpg" -->
 
-# How does it <br>work?<!-- .element: style="color:#fff;" -->
+# Netlify CLI <!-- .element: style="color:#fff;" -->
+
+Note: Netlify CLI lets us more easily build serverless functions in a dev environment and then port them to productions. We can also do other things like easily manage secrets between both environments.
 
 ---
 
-<img src="./images/webmention_io.jpg" class="no-outline" alt="Screenshot of Webmention.io website" width="50%">
-
-<small>[webmention.io/](https://webmention.io/)</small>
-
----
-
-## webmention.io
-
-Collects webmentions and pingbacks on your behalf
-
-```html
-<!-- in <head> of your website: -->
-<link rel="webmention" href="https://webmention.io/yourdomain/webmention" />
-<link rel="pingback" href="https://webmention.io/yourdomain/abcdefg" />
+```
+$ npm install netlify-cli -g
+$ netlify
+$ netlify login
 ```
 
-Note: pingbacks are a legacy XML-RPC protocol that existed before webmentions
+<small>Create a Netlify account if you haven't yet - it's free!</small>
+
+Note: install, learn about the command, then login which opens up web auth. Do the above and explain the commands we will use - init, deploy, login, functions, env, dev.
+
+<small>[Get started with Netlify CLI](https://docs.netlify.com/cli/get-started/)</small>
+
+---
+
+```
+Success! Netlify CLI has been installed!
+
+Your device is now configured to use Netlify CLI to deploy and manage
+your Netlify sites.
+
+Next steps:
+
+  netlify init     Connect or create a Netlify site from current
+                   directory
+  netlify deploy   Deploy the latest changes to your Netlify site
+
+For more information on the CLI run netlify help
+Or visit the docs at https://cli.netlify.com
+```
+
+---
+
+## Hello, Netlify!
+
+1. **Fork** [the demo](https://github.com/siakaramalegos/serverless-netlify-demo) (don't clone!)
+2. Clone **your** repo.
+3. `cd serverless-netlify-demo`
+4. `npm install`
+5. `netlify init`
+
+<small>Build command is `npm run build` and deploy directory is `_site`.</small>
+
+<small>[bit.ly/yo-serverless](https://github.com/siakaramalegos/serverless-netlify-demo)</small>
+
+---
+
+## Hello, Netlify!
+
+Commit changes and push, then run `netlify open`.
+
+# 🎉
+
+---
+
+<!-- .slide: data-background="./images/bucography-r7eBv7pnP2E-unsplash.jpg" -->
+
+# Environment<br> Variables <!-- .element: class="text-left color-secondary" -->
 
 ---
 
