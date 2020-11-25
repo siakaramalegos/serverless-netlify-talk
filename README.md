@@ -1,12 +1,14 @@
-# Webmentions + Eleventy Talk
+# Intro to Serverless Functions Using Netlify, a mini-workshop
 
-Webmentions are an exciting standard which help enable the IndieWeb. We can own our own content, hosted on our own domains, without sacrificing social connection and replies with other people!
+Serverless functions are a key skill to know when moving to Jamstack applications or serverless architecture. Going serverless means having no server to manage while also having the ability to scale infinitely.
 
-In this talk, I discuss what webmentions are and how to implement them. The code is based on an Eleventy site, but the concepts should be applicable to any site.
+In this workshop, we'll start with a basic, static Eleventy website then build in dynamic features like form handling and secure API access using serverless functions. We'll use the Netlify CLI to set up our dev environment and deploy to production on Netlify. You must understand vanilla JavaScript and HTML and be familiar with running npm scripts to attend this workshop.
+
+The demo code can be found in [this repo](https://github.com/siakaramalegos/serverless-netlify-demo).
 
 ## Slides and Controls
 
-The slides are deployed at [projects.sia.codes/webmentions-eleventy-talk/](https://projects.sia.codes/webmentions-eleventy-talk/#/).
+The slides are deployed at [projects.sia.codes/serverless-netlify/](https://projects.sia.codes/serverless-netlify/#/).
 
 To advance the slides, use `n` for next and `p` for previous. The right arrow jumps to the next section (and left for previous section). Up and down to advance through slides within a section.
 
