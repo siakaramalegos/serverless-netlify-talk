@@ -158,226 +158,131 @@ Commit changes and push, then run `netlify open`.
 
 ---
 
-## webmention.io
+## Keeping secrets secret 🕵🏻‍♀️
 
-Send webmentions as a POST request <br> to the webmention endpoint with:
-- a source (your URL)
-- the target (post you're replying to)
+1. Get an API key at [api.nasa.gov/](https://api.nasa.gov/)
+2. Run `netlify open` to go to the Netlify UI
+3. Save as `NASA_API_KEY` in **Build & Deploy** > **Environment**
+4. Run `netlify dev` to confirm it gets injected for local dev
 
+Note: you can set some env vars in your netlify.toml, but don't put secret ones there as that file must be checked into git.
+
+---
+
+<img src="./images/env-netlify-dev.png" alt="Netlify Dev: Injected build setting env var: NASA_API_KEY" class="no-outline">
+
+---
+
+<!-- .slide: data-background="./images/duotone-babies.jpg" -->
+
+# Serverless Functions <!-- .element: style="color:#fff;" -->
+
+---
+
+## Netlify Functions
+
+<div class="align-left">
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="fab fa-aws"></i></span> Uses AWS serverless Lambda under the hood</p>
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-code-merge"></i></span> Version-controlled, built, and deployed with your site</p>
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="far fa-binoculars"></i></span> Automatic service discovery (for Deploy Previews and rollbacks)</p>
+  <p class="fragment fade-in-then-semi-out"><span class="icons"><i class="fab fa-js"></i></span> JavaScript and Go both supported</p>
+</div>
+
+<small>[Netlify functions overview](https://docs.netlify.com/functions/overview/)</small>
+
+---
+
+## netlify.toml
+
+```toml
+[build]
+  command = "npm run build"
+  publish = "_site"
+  functions = "functions"
 ```
-curl -si https://webmention.io/yourdomain/webmention \
-  -d source=https://yourdomain/page_with_reply.html \
-  -d target=https://page_being_replied.com
+
+<small>[File-based configuration](https://docs.netlify.com/configure-builds/file-based-configuration/)</small>
+
+Note: First, we need to tell Netlify where to look for our functions. This will now sync our settings and point to where the functions can be found in our project.
+
+---
+
+<p class="text-left"><span class="icons"><i class="fas fa-pencil"></i></span> Write functions in <strong>/functions/hello.js</strong>.</p>
+<p class="text-left"><span class="icons"><i class="far fa-code"></i></span> Access functions via <strong>/.netlify/functions/hello</strong>.</p>
+
+---
+
+## functions/hello.js
+
+```javascript
+exports.handler = async function(event, context) {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({message: "Hello World"})
+  };
+}
 ```
 
 ---
 
-Form on my blog pages for people to manually send replies:
+## src/index.html
 
 ```html
-<form action="https://webmention.io/sia.codes/webmention" method="post">
-
-  <input type="url" name="source">
-
-  <input type="hidden" name="target"
-    value="https://sia.codes/{{ page.url }}">
-
-  <input type="submit">
-</form>
+<!-- At bottom of file: -->
+<script>
+  fetch('/.netlify/functions/hello')
+    .then(response => response.json())
+    .then(json => console.log({json}))
+</script>
 ```
 
----
-
-<img src="./images/bridgy.jpg" class="no-outline" alt="Screenshot of brid.gy website" width="70%">
-
-<small>[brid.gy/](https://brid.gy/)</small>
-
-Note: allows you to easily grab webmentions from these social media platforms as well - for example, Twitter likes, replies, and retweets.
+Note: restart netlify dev, then check console
 
 ---
 
-<img src="./images/bridgy-polling.jpg" class="no-outline" alt="Brid.gy table of responses with a column matching to any existing webmention targets" width="70%">
+## What's in the `event` parameter?
 
----
-
-## Set up Webmention Services
-
-<span class="icons"><i class="fas fa-2x fa-concierge-bell"></i></span>
-
-<ol>
-  <li class="fragment fade-in-then-semi-out">Set up <a href="https://indieauth.com/setup">IndieAuth</a> so you can log in with your domain.</li>
-  <li class="fragment fade-in-then-semi-out">Sign in on <a href="https://webmention.io/">webmention.io</a> to get your link tags so webmention.io can collect webmentions for your site.</li>
-  <li class="fragment fade-in-then-semi-out">Securely save your webmention.io API key.</li>
-  <li class="fragment fade-in-then-semi-out">Optionally sign up for a social media webmention service like <a href="https://brid.gy/">Bridgy</a>.</li>
-</ol>
-
-Note: I didn't know about Netlify-cli when I wrote the post - that is a better option for managing env variables.
+```js
+{
+    "path": "Path parameter",
+    "httpMethod": "Incoming request's method name"
+    "headers": {Incoming request headers}
+    "queryStringParameters": {query string parameters }
+    "body": "A JSON string of the request payload."
+    "isBase64Encoded": "A boolean flag to indicate if the applicable
+      request payload is Base64-encode"
+}
+```
 
 ---
 
 <!-- .slide: data-background="./images/duotone-road.jpg" -->
 
-# Eleventy <!-- .element: class="dark-background" -->
+# Bringing it all together <!-- .element: class="dark-background" -->
 
 ---
 
-<img src="./images/webmention_article.png" class="no-outline" alt="Screenshot of my Webmention + Eleventy tutorial" width="70%">
-
-<small>[An In-Depth Tutorial of Webmentions + Eleventy](https://sia.codes/posts/webmentions-eleventy-in-depth/) on sia.codes</small>
-
-Note: This talk won't be an in-depth tutorial - we'll focus on the high-level how. The good news is I already have a detailed tutorial published!
-
----
-
-## The Process <span class="icons"><i class="far fa-project-diagram"></i></span>
-
-- In production, fetch new webmentions during the build<!-- .element: class="fragment fade-in-then-semi-out" -->
-- Store them in a cache file<!-- .element: class="fragment fade-in-then-semi-out" -->
-- Render the webmentions<!-- .element: class="fragment fade-in-then-semi-out" -->
-- Set up periodic builds<!-- .element: class="fragment fade-in-then-semi-out" -->
-
----
-
-## Fetch new webmentions
-
-&nbsp;
+```
+$ npm install node-fetch --save
+```
 
 ```javascript
-// `since` comes from the `lastFetched` attribute in our cache file
-const API = 'https://webmention.io/api'
-const url = `${API}/mentions.jf2?domain=${domain}&token=${TOKEN}
-  &per-page=${perPage}&since=${since}`
-// ...
+// functions/apod.js
+const fetch = require("node-fetch")
 ```
-&nbsp;
 
-<small>**Prior art**: I started with Max Böck's post [Static Indieweb pt2: Using Webmentions](https://mxb.dev/blog/using-webmentions-on-static-sites/) and the code for Zach Leatherman's [personal site](https://github.com/zachleat/zachleat.com), sprinkled in microformats from Keith Grant's [Adding Webmention Support to a Static Site](https://keithjgrant.com/posts/2019/02/adding-webmention-support-to-a-static-site/), and made my own changes.</small>
+Note: Node does not have fetch available in its api so we need to install it.
 
 ---
 
-## Write to cache file
+<!-- Add form id, create submit handler, add event listener to form, move fetch inside handler, e.preventdefault, check works -->
+<!-- form data on target, method post body stringify date, in function get date from const {date} = JSON.parse(event.body) and send back, check works -->
 
-```javascript
-// save combined webmentions in cache file (simplified)
-function writeToCache(data) {
-  const dir = '_cache'
-  const fileContent = JSON.stringify(data, null, 2)
-
-  // write data to cache json file
-  fs.writeFile(CACHE_FILE_PATH, fileContent, err => {
-    if (err) throw err
-    console.log(`>>> webmentions cached to ${CACHE_FILE_PATH}`)
-  })
-}
-```
+<small>[FormData MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/FormData), [Checking that fetch is successful](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Checking_that_the_fetch_was_successful), [`<template>` MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template)</small>
 
 ---
 
-## Render webmentions: Filters
 
-New Nunjucks [filters](https://mozilla.github.io/nunjucks/templating.html#filters) for handling the data:
-
-```javascript
-function getWebmentionsForUrl (webmentions, url) {
-  return webmentions.children.filter(entry => {
-    return entry['wm-target'] === url
-  })
-}
-
-function size (mentions) {
-  return !mentions ? 0 : mentions.length
-}
-
-function webmentionsByType (mentions, mentionType) {
-  return mentions.filter(entry => !!entry[mentionType])
-}
-```
-
----
-
-## Render webmentions: Template
-
-Set all the variables needed:
-
-```html
-<!-- _includes/webmentions.njk -->
-
-<!-- Filter the cached mentions for the post's url -->
-{% set mentions = webmentions | getWebmentionsForUrl(metadata.url + webmentionUrl) %}
-<!-- Set likes as mentions that are `like-of`  -->
-{% set likes = mentions | webmentionsByType('like-of') %}
-<!-- Count the total likes -->
-{% set likesSize = likes | size %}
-<!-- Set replies as mentions that are `in-reply-to`  -->
-{% set replies = mentions | webmentionsByType('in-reply-to')  %}
-<!-- Count the total replies -->
-{% set repliesSize = replies | size  %}
-
-<!-- ... -->
-```
-
----
-
-## Render webmentions: Loop through data
-
-```html
-<!-- _includes/webmentions.njk -->
-
-<!-- ... -->
-{% if repliesSize > 0 %}
-<div class="webmention-replies">
-  <h3>{{ repliesSize }} {% if repliesSize == "1" %}Reply{% else %}Replies{% endif %}</h3>
-  {% for webmention in replies %}
-    {% include 'webmention.njk' %}
-  {% endfor %}
-</div>
-{% endif %}
-```
-
----
-
-## Render webmentions
-
-```html
-<!-- _includes/webmention.njk - simplified -->
-<article>
-  {% if webmention.author %}
-    <strong class="p-name">{{ webmention.author.name }}</strong>
-  {% else %}
-    <strong>Anonymous</strong>
-  {% endif %}
-
-  <p>
-    {{ webmention.content.text | truncate }}
-    {% if webmention.url %}
-      <a href="{{ webmention.url }}">source</a>
-    {% endif %}
-  </p>
-</article>
-```
-
----
-
-## Fake Netlify cron jobs with GitHub actions!
-
-```yaml
-# .github/workflows/build-scheduler.yml
-name: Scheduled build
-on:
-  schedule:
-  # At minute 20 past every 4th hour from 0 through 23.
-  - cron: '20 0/4 * * *'
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Trigger our build webhook on Netlify
-      run: curl -s -X POST "https://api.netlify.com/build_hooks/${TOKEN}"
-      env:
-        TOKEN: ${{ secrets.NETLIFY_BUILD_TOKEN }}
-```
-
-<small>[Scheduling Netlify deploys with GitHub Actions](https://www.voorhoede.nl/en/blog/scheduling-netlify-deploys-with-github-actions/), [crontab guru](https://crontab.guru/#15_0/3_*_*_*)</small>
 
 ---
 
