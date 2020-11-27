@@ -517,6 +517,7 @@ video {
 .reveal .text-left { text-align: left; }
 .reveal .text-center { text-align: center; }
 .reveal .color-secondary { color: var(--secondary);}
+.reveal .mr16 {margin-right: 16px;}
 
 /* FontAwesome 5 */
 /*!
