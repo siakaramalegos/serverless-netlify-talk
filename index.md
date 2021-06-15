@@ -20,7 +20,7 @@ revealOptions:
 
 ---
 
-## [bit.ly/serverless-netlify](https://bit.ly/serverless-netlify)
+## [projects.sia.codes/serverless-netlify-talk/](https://projects.sia.codes/serverless-netlify-talk/)
 
 ---
 
@@ -203,7 +203,7 @@ Note: The context parameter includes information about the context in which the 
 <!-- .slide: data-background="./images/akshar-dave-1GRvY9WUu08-unsplash.jpg" -->
 <h1 class="title" style="text-align:left;">Thanks!</h1>
 
-<p style="color:#333;text-align:left;">Slides:<br> <a href="https://bit.ly/serverless-netlify" class="link-secondary">bit.ly/serverless-netlify</a></p>
+<p style="color:#333;text-align:left;">Slides:<br> <a href="https://projects.sia.codes/serverless-netlify-talk/" class="link-secondary">projects.sia.codes/serverless-netlify-talk/</a></p>
 <p style="color:#333;text-align:left;">Demo:<br> <a href="https://github.com/siakaramalegos/serverless-netlify-demo" class="link-secondary">bit.ly/yo-serverless</a></p>
 <p style="color:#333;text-align:left;">Writing, resources, and more:<br> <a href="https://sia.codes/" class="link-secondary">sia.codes</a></p>
 
