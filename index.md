@@ -86,7 +86,7 @@ Note: you can also use vanilla html, css, and javascript.
 
 ## Why I ♥️ Netlify
 
-Note: Ask how many have used it - write in chat. Also write what your favorite feature is. My loves: it's just so freaking easy. Deploy with simple "git push" and can run code for builds so you don't have to do it locally first, shows old version if build fails, PR deploy previews, super easy basic forms, automatic HTTPS/SSL, CDN/edge deployments automatic, automatic Brotli compression. This is all before I started using it for serverless functions.
+Note: Ask how many have used it - write in chat. Also write what your favorite feature is. My loves: it's just so freaking easy. Deploy with simple "git push" and can run code for builds so you don't have to do it locally first, shows old version if build fails, PR deploy previews, super easy basic forms, automatic HTTPS/SSL, CDN/edge deployments automatic, automatic Brotli compression, handle redirects. This is all before I started using it for serverless functions.
 
 ---
 
